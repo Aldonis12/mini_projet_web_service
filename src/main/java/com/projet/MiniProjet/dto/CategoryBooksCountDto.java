@@ -1,12 +1,20 @@
 package com.projet.MiniProjet.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class CategoryBooksCountDto {
-    private Long categoryId;
+
     private String categoryName;
     private Long booksCount;
+
+    public CategoryBooksCountDto() {
+    }
+
+    public CategoryBooksCountDto(String categoryName, Long booksCount) {
+        this.categoryName = categoryName;
+        this.booksCount = booksCount;
+    }
+
+    public String getCategoryName() { return categoryName; }
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; }
+    public Long getBooksCount() { return booksCount; }
+    public void setBooksCount(Long booksCount) { this.booksCount = booksCount; }
 }
