@@ -32,7 +32,7 @@ public class AuthController {
                             examples = @ExampleObject(
                                     value = "{\n" +
                                             "  \"fullName\": \"Nouveau User\",\n" +
-                                            "  \"email\": \"newuser@library.com\",\n" +
+                                            "  \"email\": \"newuser@gmail.com\",\n" +
                                             "  \"password\": \"password123\",\n" +
                                             "  \"role\": \"USER\"\n" +
                                             "}"
@@ -53,7 +53,7 @@ public class AuthController {
                     content = @Content(
                             examples = @ExampleObject(
                                     value = "{\n" +
-                                            "  \"email\": \"admin@library.com\",\n" +
+                                            "  \"email\": \"admin@gmail.com\",\n" +
                                             "  \"password\": \"admin123\"\n" +
                                             "}"
                             )
