@@ -14,38 +14,67 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
-    private final AuthorModelAssembler assembler;
+    private final AuthorModelAssembler authorModelAssembler;
 
-    public AuthorController(AuthorService authorService, AuthorModelAssembler assembler) {
+    public AuthorController(AuthorService authorService, AuthorModelAssembler authorModelAssembler) {
         this.authorService = authorService;
-        this.assembler = assembler;
+        this.authorModelAssembler = authorModelAssembler;
     }
+
+    // @GetMapping
+    // public CollectionModel<EntityModel<AuthorResponseDto>> getAll() {
+    //     List<AuthorResponseDto> authorDtos = authorService.findAll();
+    //     List<EntityModel<AuthorResponseDto>> authors = new ArrayList<>();
+
+    //     for (AuthorResponseDto authorDto : authorDtos) {
+    //         authors.add(authorModelAssembler.toModel(authorDto));
+    //     }
+
+    //     return CollectionModel.of(
+    //             authors,
+    //             linkTo(methodOn(AuthorController.class).getAll()).withSelfRel()
+    //     );
+    // }
 
     @GetMapping
     public CollectionModel<EntityModel<AuthorResponseDto>> getAll() {
-        return CollectionModel.of(authorService.findAll().stream().map(assembler::toModel).toList(),
-                linkTo(methodOn(AuthorController.class).getAll()).withSelfRel());
+        List<EntityModel<AuthorResponseDto>> authors = authorService.findAll()
+                .stream()
+                .map(authorModelAssembler::toModel)
+                .toList();
+
+        return CollectionModel.of(
+                authors,
+                linkTo(methodOn(AuthorController.class).getAll()).withSelfRel()
+        );
     }
 
     @GetMapping("/{id}")
     public EntityModel<AuthorResponseDto> getById(@PathVariable Long id) {
-        return assembler.toModel(authorService.findById(id));
+        AuthorResponseDto author = authorService.findById(id);
+        return authorModelAssembler.toModel(author);
     }
 
     @PostMapping
     public ResponseEntity<EntityModel<AuthorResponseDto>> create(@Valid @RequestBody AuthorRequestDto dto) {
-        AuthorResponseDto saved = authorService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(assembler.toModel(saved));
+        AuthorResponseDto savedAuthor = authorService.create(dto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(authorModelAssembler.toModel(savedAuthor));
     }
 
     @PutMapping("/{id}")
     public EntityModel<AuthorResponseDto> update(@PathVariable Long id, @Valid @RequestBody AuthorRequestDto dto) {
-        return assembler.toModel(authorService.update(id, dto));
+        AuthorResponseDto updatedAuthor = authorService.update(id, dto);
+        return authorModelAssembler.toModel(updatedAuthor);
     }
 
     @DeleteMapping("/{id}")
