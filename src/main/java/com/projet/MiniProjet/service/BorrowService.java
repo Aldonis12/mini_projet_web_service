@@ -42,7 +42,7 @@ public class BorrowService {
                 .orElseThrow(() -> new ResourceNotFoundException("Livre non trouvé avec l'id : " + dto.getBookId()));
 
         if (book.getAvailableQuantity() == null || book.getAvailableQuantity() <= 0) {
-            throw new BadRequestException("Aucun exemplaire disponible pour ce livre.");
+            throw new BadRequestException("Indisponible");
         }
 
         book.setAvailableQuantity(book.getAvailableQuantity() - 1);
