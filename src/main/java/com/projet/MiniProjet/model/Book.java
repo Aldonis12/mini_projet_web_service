@@ -8,9 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-// @NoArgsConstructor
-//@AllArgsConstructor
-//@Builder
 @Table(name = "books")
 public class Book {
 
@@ -38,10 +35,6 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Borrow> borrows = new ArrayList<>();
 
-    // @ManyToOne
-    // @JoinColumn(name = "category_id")
-    // private BookCategory category;
-
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -49,7 +42,7 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String isbn, Integer publicationYear, Integer availableCopies, Category category) {
+    public Book(String title, String isbn, Integer publicationYear, Integer availableQuantity, Category category) {
         this.title = title;
         this.isbn = isbn;
         this.publicationYear = publicationYear;
